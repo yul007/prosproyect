@@ -42,7 +42,7 @@ final int RANGO_RESPAWN_MUN_MIN_MS = 6000;
 final int RANGO_RESPAWN_MUN_MAX_MS = 13000;
 
 // ============================================================
-//  Título: setup() - carga recursos y arranca la partida
+//  setup()
 // ============================================================
 void setup() {
   size(800, 450);
@@ -55,7 +55,7 @@ void setup() {
 }
 
 // ============================================================
-//  Título: draw() - render principal por estado
+//  draw()
 // ============================================================
 void draw() {
   dibujarFondoAnimado();
@@ -70,7 +70,7 @@ void draw() {
 }
 
 // ============================================================
-//  Título: iniciarJuego() - reinicia progreso global
+//  Inicialización
 // ============================================================
 void iniciarJuego() {
   puntaje = 0;
@@ -80,9 +80,6 @@ void iniciarJuego() {
   iniciarNivel(nivel, vidaPersistente, municionPersistente);
 }
 
-// ============================================================
-//  Título: iniciarNivel() - prepara jugador, items y enemigos
-// ============================================================
 void iniciarNivel(int nivelActual, int vidaInicial, int municionInicial) {
   nivel = nivelActual;
   proximoRespawnVida = -1;
@@ -121,7 +118,7 @@ void iniciarNivel(int nivelActual, int vidaInicial, int municionInicial) {
 }
 
 // ============================================================
-//  Título: actualizarJuego() - reglas de movimiento, colisión y progreso
+//  Lógica del juego
 // ============================================================
 void actualizarJuego() {
   // Mover jugador con teclado (procesado en keyPressed)
@@ -179,28 +176,22 @@ void actualizarJuego() {
 }
 
 // ============================================================
-//  Título: dibujarMenu() - pantalla inicial
+//  Dibujo de estados
 // ============================================================
 void dibujarMenu() {
   fill(0, 0, 0, 90);
   rect(0, 0, width, height);
   fill(255, 220, 80);
-  textSize(48);
-  text("Space Attack", width / 2, 180);
+  textSize(65);
+  text("SPACE ATTACK", width / 2, 140);
 
   fill(200);
-  textSize(22);
+  textSize(24);
   text("Presiona  ENTER  para jugar", width / 2, 300);
   text("Presiona  ESC   para salir",  width / 2, 340);
-
-  fill(120, 200, 255);
-  textSize(16);
   text("WASD / Flechas = moverse   |   SPACE = disparar   |   P = pausa", width / 2, 400);
 }
 
-// ============================================================
-//  Título: dibujarJuego() - escena jugable activa
-// ============================================================
 void dibujarJuego() {
   actualizarJuego();
 
@@ -218,9 +209,6 @@ void dibujarJuego() {
   dibujarHUD();
 }
 
-// ============================================================
-//  Título: dibujarPausa() - capa de pausa sobre la escena
-// ============================================================
 void dibujarPausa() {
   dibujarJuegoEstatico();
   fill(0, 0, 0, 150);
@@ -233,23 +221,14 @@ void dibujarPausa() {
   text("Presiona P para continuar", width / 2, height / 2 + 30);
 }
 
-// ============================================================
-//  Título: dibujarGameOver() - pantalla de derrota
-// ============================================================
 void dibujarGameOver() {
   dibujarPantallaFinal("PERDISTE", color(220, 70, 70), "Presiona ENTER para reiniciar");
 }
 
-// ============================================================
-//  Título: dibujarGanaste() - pantalla de victoria
-// ============================================================
 void dibujarGanaste() {
   dibujarPantallaFinal("GANASTE", color(90, 220, 140), "Presiona ENTER para jugar de nuevo");
 }
 
-// ============================================================
-//  Título: dibujarPantallaFinal() - plantilla de pantallas finales
-// ============================================================
 void dibujarPantallaFinal(String titulo, color colorTitulo, String instruccion) {
   fill(0, 0, 0, 120);
   rect(0, 0, width, height);
@@ -264,9 +243,6 @@ void dibujarPantallaFinal(String titulo, color colorTitulo, String instruccion) 
   text(instruccion, width / 2, 390);
 }
 
-// ============================================================
-//  Título: dibujarJuegoEstatico() - render congelado para pausa
-// ============================================================
 void dibujarJuegoEstatico() {
   powerup1.dibujar();
   municionesItem.dibujar();
@@ -275,9 +251,6 @@ void dibujarJuegoEstatico() {
   dibujarHUD();
 }
 
-// ============================================================
-//  Título: dibujarHUD() - información visible del jugador
-// ============================================================
 void dibujarHUD() {
   // Barra de vida
   fill(60);
@@ -286,14 +259,14 @@ void dibujarHUD() {
   float barraVida = map(jugador.getVida(), 0, jugador.getVidaMax(), 0, 200);
   rect(10, 10, barraVida, 18, 4);
   fill(255);
-  textSize(13);
+  textSize(20);
   textAlign(LEFT, CENTER);
   text("Vida: " + jugador.getVida() + "/" + jugador.getVidaMax(), 15, 19);
   textAlign(CENTER, CENTER);
 
   // Info superior derecha
   fill(255, 220, 80);
-  textSize(15);
+  textSize(20);
   textAlign(RIGHT, TOP);
   text("Puntaje: " + puntaje + "   Nivel: " + nivel, width - 10, 10);
   text("Munición: " + jugador.getMunicion(), width - 10, 30);
@@ -306,7 +279,7 @@ void dibujarHUD() {
 }
 
 // ============================================================
-//  Título: keyPressed() - controles de movimiento y acciones
+//  Controles — teclado
 // ============================================================
 void keyPressed() {
   if (estadoActual == ESTADO_JUGANDO) {
@@ -359,9 +332,6 @@ void keyPressed() {
   }
 }
 
-// ============================================================
-//  Título: keyReleased() - liberar movimiento continuo
-// ============================================================
 void keyReleased() {
   if (keyCode == UP    || key == 'w' || key == 'W') jugador.moverArriba(false);
   if (keyCode == DOWN  || key == 's' || key == 'S') jugador.moverAbajo(false);
@@ -370,7 +340,7 @@ void keyReleased() {
 }
 
 // ============================================================
-//  Título: enemigoCercano() - selecciona objetivo de disparo
+//  Utilidades
 // ============================================================
 Enemigo enemigoCercano() {
   Enemigo mas = null;
@@ -384,7 +354,7 @@ Enemigo enemigoCercano() {
 }
 
 // ============================================================
-//  Título: dibujarFondoAnimado() - fondo del nivel con sprite sheet
+//  Fondo animado y respawns
 // ============================================================
 void dibujarFondoAnimado() {
   if (fondoSheet == null) {
@@ -393,14 +363,12 @@ void dibujarFondoAnimado() {
   }
 
   int frameFondo = (millis() / FONDO_FRAME_INTERVALO_MS) % FONDO_FRAMES;
-  image(fondoSheet, 0, 0, 800, 450, //antes image(fondoSheet, 0, 0, width, height,
+  image(fondoSheet, 0, 0, 800, 450, 
+  //antes image(fondoSheet, 0, 0, width, height,
         0, frameFondo * FONDO_FRAME_ALTO,
         800, frameFondo * FONDO_FRAME_ALTO + FONDO_FRAME_ALTO);
 }
 
-// ============================================================
-//  Título: colocarItemAleatorio() - ubica recursos en el mapa
-// ============================================================
 void colocarItemAleatorio(Item item) {
   if (item == null) return;
   float x = 0;
@@ -421,23 +389,14 @@ void colocarItemAleatorio(Item item) {
   item.reactivarEn(x, y);
 }
 
-// ============================================================
-//  Título: programarRespawnVida() - agenda reaparición de salud
-// ============================================================
 void programarRespawnVida() {
   proximoRespawnVida = millis() + int(random(RANGO_RESPAWN_VIDA_MIN_MS, RANGO_RESPAWN_VIDA_MAX_MS));
 }
 
-// ============================================================
-//  Título: programarRespawnMunicion() - agenda reaparición de munición
-// ============================================================
 void programarRespawnMunicion() {
   proximoRespawnMunicion = millis() + int(random(RANGO_RESPAWN_MUN_MIN_MS, RANGO_RESPAWN_MUN_MAX_MS));
 }
 
-// ============================================================
-//  Título: actualizarRespawns() - materializa respawns pendientes
-// ============================================================
 void actualizarRespawns() {
   if (!powerup1.estaActivo() && proximoRespawnVida >= 0 && millis() >= proximoRespawnVida) {
     colocarItemAleatorio(powerup1);

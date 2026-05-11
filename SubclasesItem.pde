@@ -98,7 +98,7 @@ class Municiones extends Item {
   private String tipo;
 
   Municiones(float x, float y, String tipo, int cantidad) {
-    super(x, y, "Mun." + tipo, color(200, 200, 60));
+    super(x, y,  tipo + "+", color(200, 200, 60));
     this.tipo     = tipo;
     this.cantidad = cantidad;
   }

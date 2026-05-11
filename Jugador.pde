@@ -1,6 +1,5 @@
 // ============================================================
-//  Jugador.pde  —  Subclase de Personaje (HERENCIA)
-//  Añade: movimiento, arma equipada, munición, vidas extra
+//  Título: Jugador.pde - control, disparo y munición
 // ============================================================
 
 class Jugador extends Personaje {
@@ -31,13 +30,13 @@ class Jugador extends Personaje {
   void agregarMunicion(int m) { if (m > 0) municion += m; }
   void agregarVida(int hp)    { curar(hp); }  // redirige al método heredado
 
-  // ── Equipar arma (oculta detalles de asignación) ──────────
+  // ── Título: equiparArma() - asigna arma y daño base ────────
   void equiparArma(Arma a) {
     armaEquipada = a;
     if (a != null) setDanioAtaque(a.getDanio());
   }
 
-  // ── Mecánica de disparo (encapsula toda la lógica) ────────
+  // ── Título: disparar() - consume munición ──────────────────
   boolean disparar() {
     if (armaEquipada == null || municion <= 0) return false;
     municion--;
@@ -51,7 +50,7 @@ class Jugador extends Personaje {
   void moverIzquierda(boolean estado) { moviendoIzq    = estado; }
   void moverDerecha(boolean estado)   { moviendoDer    = estado; }
 
-  // ── Actualizar posición según flags ──────────────────────
+  // ── Título: actualizar() - aplica movimiento continuo ─────
   @Override
   void actualizar() {
     float nx = getX();
@@ -68,7 +67,7 @@ class Jugador extends Personaje {
     setY(ny);
   }
 
-  // ── Dibujar jugador (forma de nave/personaje) ─────────────
+  // ── Título: dibujar() - nave del jugador y HUD local ──────
   @Override
   void dibujar() {
     if (!estaVivo()) return;

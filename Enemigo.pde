@@ -1,6 +1,5 @@
 // ============================================================
-//  Enemigo.pde  —  Subclase de Personaje (HERENCIA)
-//  Añade: movimiento autónomo hacia el jugador, dificultad
+//  Título: Enemigo.pde - enemigos base y enemigo especial
 // ============================================================
 
 class Enemigo extends Personaje {
@@ -8,7 +7,7 @@ class Enemigo extends Personaje {
   // ── Atributos privados ─────────────────────────────────────
   private float velocidad;
   private float dificultad;   // multiplicador de daño / velocidad
-  private float angulo;       // para movimiento ondulado
+  protected float rotacionBase;
 
   // ── Constructor ────────────────────────────────────────────
   Enemigo(float x, float y, String nombre, float dificultad) {
@@ -18,14 +17,14 @@ class Enemigo extends Personaje {
           color(220, 60, 60));
     this.dificultad = dificultad;
     this.velocidad  = 1.0 + dificultad * 0.5;
-    this.angulo     = random(TWO_PI);
+    this.rotacionBase = random(TWO_PI);
   }
 
   // ── Getters propios ────────────────────────────────────────
   float getDificultad() { return dificultad; }
   int   getDanio()      { return getDanioAtaque(); }
 
-  // ── Actualizar: perseguir al jugador ──────────────────────
+  // ── Título: actualizar() - movimiento base del enemigo ────
   @Override
   void actualizar() {
     if (!estaVivo()) return;
@@ -39,7 +38,7 @@ class Enemigo extends Personaje {
     }
   }
 
-  // ── Dibujar enemigo (rombo/diamante) ──────────────────────
+  // ── Título: dibujar() - sprite base del enemigo ───────────
   @Override
   void dibujar() {
     if (!estaVivo()) return;
@@ -47,7 +46,7 @@ class Enemigo extends Personaje {
 
     pushMatrix();
     translate(px, py);
-    rotate(frameCount * 0.025);
+    rotate(frameCount * 0.025 + rotacionBase);
     noStroke();
     fill(getColor());
     // Rombo
@@ -74,7 +73,7 @@ class Enemigo extends Personaje {
 }
 
 // ────────────────────────────────────────────────────────────
-//  Asteoride — enemigo especial con más vida y movimiento más errático
+//  Título: Asteoride - variante especial del enemigo base
 // ────────────────────────────────────────────────────────────
 class Asteoride extends Enemigo {
   Asteoride(float x, float y, String nombre, float dificultad) {
@@ -83,18 +82,14 @@ class Asteoride extends Enemigo {
     setDanioAtaque(max(10, getDanioAtaque() + 4));
   }
 
+  // ── Título: actualizar() - comparte el mismo movimiento base ──
   @Override
   void actualizar() {
     if (!estaVivo()) return;
-    float dx = jugador.getX() - getX();
-    float dy = jugador.getY() - getY();
-    float d = dist(0, 0, dx, dy);
-    if (d > 0) {
-      setX(getX() + (dx / d) * 0.7);
-      setY(getY() + (dy / d) * 0.7);
-    }
+    super.actualizar();
   }
 
+  // ── Título: dibujar() - misma rotación, distinto aspecto ─────
   @Override
   void dibujar() {
     if (!estaVivo()) return;
@@ -102,7 +97,7 @@ class Asteoride extends Enemigo {
 
     pushMatrix();
     translate(px, py);
-    rotate(frameCount * 0.03);
+    rotate(frameCount * 0.025 + rotacionBase);
     noStroke();
     fill(getColor());
     beginShape();
