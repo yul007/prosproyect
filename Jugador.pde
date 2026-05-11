@@ -1,5 +1,5 @@
 // ============================================================
-//  Título: Jugador.pde - control, disparo y munición
+//  Jugador.pde
 // ============================================================
 
 class Jugador extends Personaje {
@@ -30,13 +30,13 @@ class Jugador extends Personaje {
   void agregarMunicion(int m) { if (m > 0) municion += m; }
   void agregarVida(int hp)    { curar(hp); }  // redirige al método heredado
 
-  // ── Título: equiparArma() - asigna arma y daño base ────────
+  // ── equiparArma() - asigna arma y daño base ───────────────
   void equiparArma(Arma a) {
     armaEquipada = a;
     if (a != null) setDanioAtaque(a.getDanio());
   }
 
-  // ── Título: disparar() - consume munición ──────────────────
+  // ── disparar() - consume munición ─────────────────────────
   boolean disparar() {
     if (armaEquipada == null || municion <= 0) return false;
     municion--;
@@ -50,7 +50,7 @@ class Jugador extends Personaje {
   void moverIzquierda(boolean estado) { moviendoIzq    = estado; }
   void moverDerecha(boolean estado)   { moviendoDer    = estado; }
 
-  // ── Título: actualizar() - aplica movimiento continuo ─────
+  // ── actualizar() - aplica movimiento continuo ────────────
   @Override
   void actualizar() {
     float nx = getX();
@@ -67,7 +67,7 @@ class Jugador extends Personaje {
     setY(ny);
   }
 
-  // ── Título: dibujar() - nave del jugador y HUD local ──────
+  // ── dibujar() - nave del jugador y HUD local ──────────────
   @Override
   void dibujar() {
     if (!estaVivo()) return;

@@ -1,5 +1,6 @@
 // ============================================================
-//  Item.pde  —  Clase BASE para ítems (Encapsulación + Herencia)
+//  Item.pde  
+// (Encapsulación + Herencia)
 // ============================================================
 
 class Item {

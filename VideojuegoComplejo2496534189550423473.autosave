@@ -1,9 +1,10 @@
-//Yuliana Guerra 00340677
+
+
+//VideojuegoBase
 
 // ============================================================
-//  VideojuegoBase.pde
-//  Estructura base de videojuego
-//  capsulación + Herencia
+//  VideojuegoBase.pde  —  Sketch principal
+//  Estructura base de videojuego  |  OOP: Encapsulación + Herencia
 // ============================================================
 
 // ---------- Estados del juego ----------
@@ -24,6 +25,7 @@ Municiones municionesItem;
 PImage fondoSheet;
 
 
+int cantidadEnemigos = 3;
 int puntaje = 0;
 int nivel   = 1;
 int vidaPersistente = 100;
@@ -40,17 +42,20 @@ final int RANGO_RESPAWN_MUN_MIN_MS = 6000;
 final int RANGO_RESPAWN_MUN_MAX_MS = 13000;
 
 // ============================================================
-//  setup() - carga recursos y arranca la partida
+//  Título: setup() - carga recursos y arranca la partida
 // ============================================================
 void setup() {
   size(800, 450);
   textAlign(CENTER, CENTER);
   fondoSheet = loadImage("fondoG.png");
+
+
+
   iniciarJuego();
 }
 
 // ============================================================
-//  draw() - render principal por estado
+//  Título: draw() - render principal por estado
 // ============================================================
 void draw() {
   dibujarFondoAnimado();
@@ -65,7 +70,7 @@ void draw() {
 }
 
 // ============================================================
-//  iniciarJuego() - reinicia progreso global
+//  Título: iniciarJuego() - reinicia progreso global
 // ============================================================
 void iniciarJuego() {
   puntaje = 0;
@@ -76,7 +81,7 @@ void iniciarJuego() {
 }
 
 // ============================================================
-//  iniciarNivel() - prepara jugador, items y enemigos
+//  Título: iniciarNivel() - prepara jugador, items y enemigos
 // ============================================================
 void iniciarNivel(int nivelActual, int vidaInicial, int municionInicial) {
   nivel = nivelActual;
@@ -100,19 +105,23 @@ void iniciarNivel(int nivelActual, int vidaInicial, int municionInicial) {
   colocarItemAleatorio(powerup1);
   colocarItemAleatorio(municionesItem);
 
+  // Crear enemigos según el nivel
   int totalEnemigos = 3 + (nivelActual - 1);
   enemigos = new Enemigo[totalEnemigos];
   for (int i = 0; i < totalEnemigos; i++) {
     float ex = 120 + i * (width - 240) / max(1, totalEnemigos - 1);
     float ey = 120 + (i % 2) * 35;
     float dificultad = 1 + i * 0.35 + (nivelActual - 1) * 0.2;
-    boolean especial = (i == totalEnemigos - 1 && nivelActual >= 2);
-    enemigos[i] = crearEnemigo(ex, ey, dificultad, especial, i + 1);
+    if (i == totalEnemigos - 1 && nivelActual >= 2) {
+      enemigos[i] = new Asteoride(ex, ey, "Asteoride " + (i + 1), dificultad);
+    } else {
+      enemigos[i] = new Enemigo(ex, ey, "Enemigo " + (i + 1), dificultad);
+    }
   }
 }
 
 // ============================================================
-//  actualizarJuego() - reglas de movimiento, colisión y progreso
+//  Título: actualizarJuego() - reglas de movimiento, colisión y progreso
 // ============================================================
 void actualizarJuego() {
   // Mover jugador con teclado (procesado en keyPressed)
@@ -170,7 +179,7 @@ void actualizarJuego() {
 }
 
 // ============================================================
-//  dibujarMenu() - pantalla inicial
+//  Título: dibujarMenu() - pantalla inicial
 // ============================================================
 void dibujarMenu() {
   fill(0, 0, 0, 90);
@@ -178,9 +187,7 @@ void dibujarMenu() {
   fill(255, 220, 80);
   textSize(48);
   text("Space Attack", width / 2, 180);
-  textSize(23);
-  text("Llega al final sin morir!", width / 2, 220);
-  
+
   fill(200);
   textSize(22);
   text("Presiona  ENTER  para jugar", width / 2, 300);
@@ -192,19 +199,27 @@ void dibujarMenu() {
 }
 
 // ============================================================
-//  dibujarJuego() - escena jugable activa
+//  Título: dibujarJuego() - escena jugable activa
 // ============================================================
 void dibujarJuego() {
   actualizarJuego();
 
-  dibujarItems();
-  dibujarEnemigos();
+  // Dibujar ítems
+  powerup1.dibujar();
+  municionesItem.dibujar();
+
+  // Dibujar enemigos
+  for (Enemigo e : enemigos) e.dibujar();
+
+  // Dibujar jugador
   jugador.dibujar();
+
+  // HUD
   dibujarHUD();
 }
 
 // ============================================================
-//  dibujarPausa() - capa de pausa sobre la escena
+//  Título: dibujarPausa() - capa de pausa sobre la escena
 // ============================================================
 void dibujarPausa() {
   dibujarJuegoEstatico();
@@ -219,18 +234,21 @@ void dibujarPausa() {
 }
 
 // ============================================================
-//  dibujarGameOver() y dibujarGanaste() - pantallas finales
+//  Título: dibujarGameOver() - pantalla de derrota
 // ============================================================
 void dibujarGameOver() {
   dibujarPantallaFinal("PERDISTE", color(220, 70, 70), "Presiona ENTER para reiniciar");
 }
 
+// ============================================================
+//  Título: dibujarGanaste() - pantalla de victoria
+// ============================================================
 void dibujarGanaste() {
   dibujarPantallaFinal("GANASTE", color(90, 220, 140), "Presiona ENTER para jugar de nuevo");
 }
 
 // ============================================================
-//  dibujarPantallaFinal() - plantilla de pantallas finales
+//  Título: dibujarPantallaFinal() - plantilla de pantallas finales
 // ============================================================
 void dibujarPantallaFinal(String titulo, color colorTitulo, String instruccion) {
   fill(0, 0, 0, 120);
@@ -247,17 +265,18 @@ void dibujarPantallaFinal(String titulo, color colorTitulo, String instruccion) 
 }
 
 // ============================================================
-//  dibujarJuegoEstatico() - render congelado para pausa
+//  Título: dibujarJuegoEstatico() - render congelado para pausa
 // ============================================================
 void dibujarJuegoEstatico() {
-  dibujarItems();
-  dibujarEnemigos();
+  powerup1.dibujar();
+  municionesItem.dibujar();
+  for (Enemigo e : enemigos) e.dibujar();
   jugador.dibujar();
   dibujarHUD();
 }
 
 // ============================================================
-//  dibujarHUD() - información visible del jugador
+//  Título: dibujarHUD() - información visible del jugador
 // ============================================================
 void dibujarHUD() {
   // Barra de vida
@@ -287,7 +306,7 @@ void dibujarHUD() {
 }
 
 // ============================================================
-//  keyPressed() - controles de movimiento y acciones
+//  Título: keyPressed() - controles de movimiento y acciones
 // ============================================================
 void keyPressed() {
   if (estadoActual == ESTADO_JUGANDO) {
@@ -341,7 +360,7 @@ void keyPressed() {
 }
 
 // ============================================================
-//  keyReleased() - liberar movimiento continuo
+//  Título: keyReleased() - liberar movimiento continuo
 // ============================================================
 void keyReleased() {
   if (keyCode == UP    || key == 'w' || key == 'W') jugador.moverArriba(false);
@@ -351,7 +370,7 @@ void keyReleased() {
 }
 
 // ============================================================
-//  enemigoCercano() - selecciona objetivo de disparo
+//  Título: enemigoCercano() - selecciona objetivo de disparo
 // ============================================================
 Enemigo enemigoCercano() {
   Enemigo mas = null;
@@ -365,7 +384,7 @@ Enemigo enemigoCercano() {
 }
 
 // ============================================================
-//  dibujarFondoAnimado() - fondo del nivel con sprite sheet
+//  Título: dibujarFondoAnimado() - fondo del nivel con sprite sheet
 // ============================================================
 void dibujarFondoAnimado() {
   if (fondoSheet == null) {
@@ -374,38 +393,13 @@ void dibujarFondoAnimado() {
   }
 
   int frameFondo = (millis() / FONDO_FRAME_INTERVALO_MS) % FONDO_FRAMES;
-  image(fondoSheet, 0, 0, 800, 450,
+  image(fondoSheet, 0, 0, 800, 450, //antes image(fondoSheet, 0, 0, width, height,
         0, frameFondo * FONDO_FRAME_ALTO,
         800, frameFondo * FONDO_FRAME_ALTO + FONDO_FRAME_ALTO);
 }
 
 // ============================================================
-//  dibujarItems() - renderiza los objetos recogibles
-// ============================================================
-void dibujarItems() {
-  powerup1.dibujar();
-  municionesItem.dibujar();
-}
-
-// ============================================================
-//  dibujarEnemigos() - renderiza todos los enemigos vivos
-// ============================================================
-void dibujarEnemigos() {
-  for (Enemigo e : enemigos) e.dibujar();
-}
-
-// ============================================================
-//  crearEnemigo() - construye enemigos base o especiales
-// ============================================================
-Enemigo crearEnemigo(float x, float y, float dificultad, boolean especial, int indice) {
-  if (especial) {
-    return new Asteoride(x, y, "Asteoride " + indice, dificultad);
-  }
-  return new Enemigo(x, y, "Enemigo " + indice, dificultad);
-}
-
-// ============================================================
-//  colocarItemAleatorio() - ubica recursos en el mapa
+//  Título: colocarItemAleatorio() - ubica recursos en el mapa
 // ============================================================
 void colocarItemAleatorio(Item item) {
   if (item == null) return;
@@ -428,21 +422,21 @@ void colocarItemAleatorio(Item item) {
 }
 
 // ============================================================
-//  programarRespawnVida() - agenda reaparición de salud
+//  Título: programarRespawnVida() - agenda reaparición de salud
 // ============================================================
 void programarRespawnVida() {
   proximoRespawnVida = millis() + int(random(RANGO_RESPAWN_VIDA_MIN_MS, RANGO_RESPAWN_VIDA_MAX_MS));
 }
 
 // ============================================================
-//  programarRespawnMunicion() - agenda reaparición de munición
+//  Título: programarRespawnMunicion() - agenda reaparición de munición
 // ============================================================
 void programarRespawnMunicion() {
   proximoRespawnMunicion = millis() + int(random(RANGO_RESPAWN_MUN_MIN_MS, RANGO_RESPAWN_MUN_MAX_MS));
 }
 
 // ============================================================
-//  actualizarRespawns() - materializa respawns pendientes
+//  Título: actualizarRespawns() - materializa respawns pendientes
 // ============================================================
 void actualizarRespawns() {
   if (!powerup1.estaActivo() && proximoRespawnVida >= 0 && millis() >= proximoRespawnVida) {

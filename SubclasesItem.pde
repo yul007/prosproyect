@@ -1,5 +1,6 @@
 // ============================================================
-//  Subclases de Item.pde  (HERENCIA)
+//  Subclases de Item.pde
+// herencias...
 //  Powerup  |  Arma  |  Municiones
 // ============================================================
 
@@ -41,6 +42,17 @@ class Powerup extends Item {
     text(getNombre(), px, py + 24 + bob);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 // ────────────────────────────────────────────────────────────
 //  Arma — aumenta el daño del jugador
@@ -88,6 +100,19 @@ class Arma extends Item {
     text(getNombre(), px, py + 18 + bob);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ────────────────────────────────────────────────────────────
 //  Municiones — agrega balas al arma equipada

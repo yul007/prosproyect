@@ -1,5 +1,5 @@
 // ============================================================
-//  Título: Enemigo.pde - enemigos base y enemigo especial
+//  Enemigo.pde 
 // ============================================================
 
 class Enemigo extends Personaje {
@@ -24,7 +24,7 @@ class Enemigo extends Personaje {
   float getDificultad() { return dificultad; }
   int   getDanio()      { return getDanioAtaque(); }
 
-  // ── Título: actualizar() - movimiento base del enemigo ────
+  // ── actualizar() - movimiento base del enemigo ────────────
   @Override
   void actualizar() {
     if (!estaVivo()) return;
@@ -38,7 +38,7 @@ class Enemigo extends Personaje {
     }
   }
 
-  // ── Título: dibujar() - sprite base del enemigo ───────────
+  // ── dibujar() - sprite base del enemigo ───────────────────
   @Override
   void dibujar() {
     if (!estaVivo()) return;
@@ -73,7 +73,7 @@ class Enemigo extends Personaje {
 }
 
 // ────────────────────────────────────────────────────────────
-//  Título: Asteoride - variante especial del enemigo base
+//  Asteoride - variante especial del enemigo base
 // ────────────────────────────────────────────────────────────
 class Asteoride extends Enemigo {
   Asteoride(float x, float y, String nombre, float dificultad) {
@@ -82,14 +82,14 @@ class Asteoride extends Enemigo {
     setDanioAtaque(max(10, getDanioAtaque() + 4));
   }
 
-  // ── Título: actualizar() - comparte el mismo movimiento base ──
+  // ── actualizar() - comparte el mismo movimiento base ──────
   @Override
   void actualizar() {
     if (!estaVivo()) return;
     super.actualizar();
   }
 
-  // ── Título: dibujar() - misma rotación, distinto aspecto ─────
+  // ── dibujar() - misma rotación, distinto aspecto ──────────
   @Override
   void dibujar() {
     if (!estaVivo()) return;

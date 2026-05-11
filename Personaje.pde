@@ -1,6 +1,6 @@
 // ============================================================
-//  Personaje.pde  —  Clase BASE para personajes
-//  Principio OOP: Encapsulación (modificadores de acceso, getters/setters)
+//  Personaje.pde 
+//  Encapsulación y modificadores de acceso, getters/setters)
 // ============================================================
 
 class Personaje {
