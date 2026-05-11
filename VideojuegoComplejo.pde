@@ -1,8 +1,4 @@
-import java.io.File;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+
 
 //VideojuegoBase
 
@@ -27,7 +23,7 @@ Arma    armaInicial;
 Powerup powerup1;
 Municiones municionesItem;
 PImage fondoSheet;
-Clip musicaFondo;
+
 
 int cantidadEnemigos = 3;
 int puntaje = 0;
@@ -52,7 +48,9 @@ void setup() {
   size(800, 600);
   textAlign(CENTER, CENTER);
   fondoSheet = loadImage("fondoG.png");
-  reproducirMusicaFondo();
+
+
+
   iniciarJuego();
 }
 
@@ -108,7 +106,7 @@ void iniciarNivel(int nivelActual, int vidaInicial, int municionInicial) {
   int totalEnemigos = 3 + (nivelActual - 1);
   enemigos = new Enemigo[totalEnemigos];
   for (int i = 0; i < totalEnemigos; i++) {
-    float ex = 120 + (i * (width - 240.0)) / max(1, totalEnemigos - 1);
+    float ex = 120 + i * (width - 240) / max(1, totalEnemigos - 1);
     float ey = 120 + (i % 2) * 35;
     float dificultad = 1 + i * 0.35 + (nivelActual - 1) * 0.2;
     if (i == totalEnemigos - 1 && nivelActual >= 2) {
@@ -368,7 +366,7 @@ void dibujarFondoAnimado() {
   }
 
   int frameFondo = (millis() / FONDO_FRAME_INTERVALO_MS) % FONDO_FRAMES;
-  image(fondoSheet, 0, 0, 800, 450,
+  image(fondoSheet, 0, 0, 800, 450, //antes image(fondoSheet, 0, 0, width, height,
         0, frameFondo * FONDO_FRAME_ALTO,
         800, frameFondo * FONDO_FRAME_ALTO + FONDO_FRAME_ALTO);
 }
@@ -410,29 +408,5 @@ void actualizarRespawns() {
   if (!municionesItem.estaActivo() && proximoRespawnMunicion >= 0 && millis() >= proximoRespawnMunicion) {
     colocarItemAleatorio(municionesItem);
     proximoRespawnMunicion = -1;
-  }
-}
-
-void reproducirMusicaFondo() {
-  try {
-    if (musicaFondo != null && musicaFondo.isOpen()) {
-      musicaFondo.close();
-    }
-
-    File archivo = new File(sketchPath("data/music.mp3"));
-    AudioInputStream audio = AudioSystem.getAudioInputStream(archivo);
-    musicaFondo = AudioSystem.getClip();
-    musicaFondo.open(audio);
-
-    if (musicaFondo.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-      FloatControl volumen = (FloatControl) musicaFondo.getControl(FloatControl.Type.MASTER_GAIN);
-      float db = -12.0f;
-      volumen.setValue(max(volumen.getMinimum(), min(volumen.getMaximum(), db)));
-    }
-
-    musicaFondo.loop(Clip.LOOP_CONTINUOUSLY);
-  }
-  catch (Exception e) {
-    println("No se pudo reproducir music.mp3: " + e.getMessage());
   }
 }

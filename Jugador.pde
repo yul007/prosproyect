@@ -1,6 +1,6 @@
 // ============================================================
 //  Jugador.pde  —  Subclase de Personaje (HERENCIA)
-//  Añade: movimiento, arma equipada y munición
+//  Añade: movimiento, arma equipada, munición, vidas extra
 // ============================================================
 
 class Jugador extends Personaje {
